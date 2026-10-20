@@ -7,5 +7,6 @@ export const config = {
   port: Number(process.env.PORT || 3000),
   jwtSecret: process.env.JWT_SECRET || 'dev-only-insecure-secret',
   jwtExpiresIn: '7d',
+  adminToken: process.env.ADMIN_TOKEN || 'change-me-admin-token',
   dataFile: path.resolve(__dirname, '..', process.env.DATA_FILE || './data/db.json'),
 };

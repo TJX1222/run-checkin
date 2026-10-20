@@ -1,5 +1,7 @@
 import express from 'express';
 import cors from 'cors';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { config } from './config.js';
 import { JsonStore } from './store.js';
 import { requireAuth } from './auth.js';
@@ -7,6 +9,9 @@ import { publicUser } from './utils.js';
 import { createAuthRouter } from './routes/auth.js';
 import { createRunsRouter } from './routes/runs.js';
 import { createStatsRouter } from './routes/stats.js';
+import { createAdminRouter } from './routes/admin.js';
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const store = new JsonStore(config.dataFile);
 const app = express();
@@ -24,6 +29,11 @@ app.use('/api/me', requireAuth(store), (req, res) => {
 });
 app.use('/api/runs', requireAuth(store), createRunsRouter(store));
 app.use('/api/stats', requireAuth(store), createStatsRouter(store));
+app.use('/api/admin', createAdminRouter(store));
+
+app.get('/admin', (_req, res) => {
+  res.sendFile(path.resolve(__dirname, '..', 'public', 'admin.html'));
+});
 
 app.use((req, res) => {
   res.status(404).json({ error: '接口不存在', path: req.path });
