@@ -1,0 +1,13 @@
+node_modules/
+.expo/
+android/
+ios/
+dist/
+build/
+.env
+server/data/db.json
+server/data/*.json
+*.apk
+*.log
+.DS_Store
+mobile/
